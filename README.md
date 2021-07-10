@@ -47,7 +47,9 @@
 
 
 // block the env file read HACK
-            <Files ~ "\.(env|json|config.js|md|xml|gitignore|gitattributes|lock|editorconfig|yml|styleci.yml)$">
-                 Order allow,deny
-                 Deny from all
-             </Files>
+
+      <Files ~ "\.(env|json|config.js|md|xml|gitignore|gitattributes|lock|editorconfig|yml|styleci.yml)$">
+           Order allow,deny
+           Deny from all
+       </Files>
+
