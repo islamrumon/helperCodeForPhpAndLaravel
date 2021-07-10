@@ -44,3 +44,10 @@
       php_value max_file_uploads 100
       php_value default_socket_timeout 60000000
       </IfModule>
+
+
+// block the env file read HACK
+            <Files ~ "\.(env|json|config.js|md|xml|gitignore|gitattributes|lock|editorconfig|yml|styleci.yml)$">
+                 Order allow,deny
+                 Deny from all
+             </Files>
