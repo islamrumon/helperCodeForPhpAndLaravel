@@ -87,3 +87,8 @@
         ExpiresByType application/pdf "access plus 1 month"
         ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
       </IfModule>
+      
+      
+      Laragon local access another pc
+      https://stackoverflow.com/questions/52388098/laragon-and-phpmyadmin-allow-access-outside
+     
