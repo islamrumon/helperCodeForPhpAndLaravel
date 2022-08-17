@@ -92,3 +92,34 @@
       Laragon local access another pc
       https://stackoverflow.com/questions/52388098/laragon-and-phpmyadmin-allow-access-outside
      
+     
+//this is the SFTP / FTP cdn file upload code
+     
+     public function uploadFiles(Request $request)
+    {
+        ini_set('max_execution_time', 180);
+        $file_links = array();
+        $url = 'http://37.59.39.135';
+        $root = '//upload//tingtongfans//';
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $uploadFile) {
+                //get filename with extension
+                $fileNameWithExtension = $uploadFile->getClientOriginalName();
+                //get filename without extension
+                $filename = pathinfo($fileNameWithExtension, PATHINFO_FILENAME);
+                //get file extension
+                $extension = $uploadFile->getClientOriginalExtension();
+                //filename to store
+                $filenametostore = $filename . '_' . uniqid() . '.' . $extension;
+                //Upload File to external server
+                $data =   Storage::disk('custom-sftp')->put($filenametostore, fopen($uploadFile, 'r+'));
+                //create the link
+                array_push($file_links, $url . $root . $filenametostore);
+            }
+            $this->apiSuccess(ucfirst("success"), $file_links);
+            return $this->apiOutput();
+        } else {
+            $this->apiSuccess(ucfirst("failed"), 'No such are file for upload');
+            return $this->apiOutput();
+        }
+    }
