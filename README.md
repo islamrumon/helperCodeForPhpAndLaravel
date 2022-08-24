@@ -138,3 +138,13 @@
                     }
                 }
             }
+            
+//Hashtag link generat form textarea field  
+            
+        
+        preg_match_all('/(?<!\w)#\w+/', $r->text_content, $allMatches);
+        if (isset($allMatches[0]) && is_array($allMatches[0])) {
+            foreach ($allMatches[0] as $item) {
+                HashTag::updateOrCreate(['post_id' => $post->id, 'hashtag' => $item], []);
+            }
+        }
