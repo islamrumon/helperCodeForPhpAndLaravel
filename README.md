@@ -148,3 +148,7 @@
                 HashTag::updateOrCreate(['post_id' => $post->id, 'hashtag' => $item], []);
             }
         }
+
+//hastag view on blade with purifer laravel
+       
+       {!! strip_tags(clean(nl2br($post->text_content)), ['youtube', 'a']) !!}
