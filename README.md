@@ -99,7 +99,7 @@
     {
         ini_set('max_execution_time', 180);
         $file_links = array();
-        $url = 'http://37.59.39.135';
+        $url = 'http://ip';
         $root = '//upload//tingtongfans//';
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $uploadFile) {
