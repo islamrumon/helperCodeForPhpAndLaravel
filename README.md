@@ -152,3 +152,58 @@
 //hastag view on blade with purifer laravel
        
        {!! strip_tags(clean(nl2br($post->text_content)), ['youtube', 'a']) !!}
+
+// FFMPG Compress the daynamic video file
+
+    public function handle()
+    {
+        echo 'comment start';
+        $videos = PostMedia::where('is_compressed', false)->where('media_type', 'Video')->latest()->first();
+        ini_set('max_execution_time', 1800);
+        // return $videos;
+        if ($videos != null) {
+            $mainPath = $videos->media_content;
+            $path1 = public_path() . '/' . $mainPath;
+            // $mainSourcePath = str_replace('/', '\\', $path1); // win
+            $mainSourcePath = str_replace('\\', '/', $path1); //linux
+
+            $compressPath = str_replace('storage/', 'storage/compress/', $videos->media_content);
+            // $compressSource = str_replace('/', '\\', (public_path() . '/' . $compressPath));  //win
+            $compressSource = str_replace('\\', '/', (public_path() . '/' . $compressPath));  //linux
+            echo $mainPath;
+            // if (file_exists('public/' . $mainPath)) {
+            // CompressVideo::
+            $bitrate   = '480k';
+            // $command = "/usr/bin/ffmpeg -i $mainSourcePath -c:v libx264 -preset slow -crf 22 -c:a copy $compressSource";
+            $command = "/usr/bin/ffmpeg -i $mainSourcePath -vcodec libx264 -vb 480k -r 24 -ab 64k -ar 48000 -ac 2 $compressSource";
+            //-vcodec libx264 -crf 24 //optimize
+            //-vcodec libx265 -crf 28 // compress
+            // $command = "/usr/bin/ffmpeg -i $mainSourcePath -vcodec [libx265]  -crf 28 $compressSource";
+            // $command = "C:/ffmpeg/bin/ffmpeg.exe -i $mainSourcePath -b $bitrate $compressSource";
+            // $command = "C:/ffmpeg/bin/ffmpeg.exe -i $path -b:v $bitrate -bufsize $bitrate $path";
+            Log::info("video compress --->   " . print_r($command, 1));
+            system($command);
+            // Log::info("data --->   " . print_r(system($command), 1));
+
+            // ffmpeg.exe -y -i inp.mp4 -vcodec libx264 -vb 480k -r 24 -ab 64k -ar 48000 -ac 2 output.mp4
+            $videos->mainfile_path =  $mainPath;
+            $videos->is_compressed =  true;
+            $videos->media_content =  $compressPath;
+            $videos->save();
+            echo "compress file save";
+
+            // if (file_exists('public/' . $compressPath)) {
+
+            // } else {
+            //     echo "compress file is not found";
+            // }
+            // } else {
+            //     echo "not found main file";
+            // }
+        }
+
+        //convert time
+        //convert end time
+        //is_compressed,
+        //main_file_path
+    }
