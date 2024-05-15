@@ -1,3 +1,17 @@
+
+//.httaccess redirect to http ti https
+
+  <IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteRule ^$ public/ [L]
+  RewriteRule (.*) public/$1 [L]
+
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+
 //.httaccess for boost laravel web applications 
 
       <IfModule mod_expires.c>
